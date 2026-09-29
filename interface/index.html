@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f1">
+  <meta name="description" content="Estimez le prix d'un ordinateur portable à partir de ses caractéristiques.">
+  <title>Laptop Price Estimator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="Laptop Price Estimator, accueil">
+        <span class="wordmark-mark" aria-hidden="true">L</span>
+        <span>Laptop <strong>Estimator</strong></span>
+      </a>
+      <div class="model-badge"><span class="status-dot" aria-hidden="true"></span>Modèle Machine Learning</div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">ESTIMATION MATÉRIELLE <span>·</span> PRÉDICTION DE PRIX</p>
+        <h1 id="page-title">Laptop Price Estimator</h1>
+        <p class="intro-copy">Estimez le prix d'un ordinateur portable à partir de ses caractéristiques.</p>
+      </section>
+
+      <div class="workspace">
+        <section class="form-panel" aria-labelledby="form-title">
+          <div class="panel-heading">
+            <div>
+              <p class="section-index">01 <span>/</span> CONFIGURATION</p>
+              <h2 id="form-title">Informations du PC</h2>
+            </div>
+            <span class="required-note"><span aria-hidden="true">*</span> Champs obligatoires</span>
+          </div>
+
+          <form id="estimation-form" novalidate>
+            <div class="field-grid">
+              <div class="field">
+                <label for="marque">Marque</label>
+                <input id="marque" name="marque" type="text" placeholder="Ex. Dell" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="titre">Titre du PC</label>
+                <input id="titre" name="titre" type="text" placeholder="Ex. Dell Latitude 5520" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="processeur">Processeur</label>
+                <input id="processeur" name="processeur" type="text" placeholder="Ex. Intel Core i5-1135G7" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="generation">Génération</label>
+                <input id="generation" name="generation" type="text" placeholder="Ex. 11eme" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="ram_go">RAM <span class="label-unit">Go</span></label>
+                <input id="ram_go" name="ram_go" type="number" min="1" step="any" inputmode="decimal" placeholder="Ex. 16" required>
+              </div>
+              <div class="field">
+                <label for="stockage_ssd">Stockage SSD <span class="label-unit">Go</span></label>
+                <input id="stockage_ssd" name="stockage_ssd" type="number" min="0" step="any" inputmode="decimal" placeholder="Ex. 512" required>
+              </div>
+              <div class="field">
+                <label for="stockage_hdd">Stockage HDD <span class="label-unit">Go</span></label>
+                <input id="stockage_hdd" name="stockage_hdd" type="number" min="0" step="any" inputmode="decimal" placeholder="Ex. 0" required>
+              </div>
+              <div class="field">
+                <label for="carte_graphique">Carte graphique</label>
+                <input id="carte_graphique" name="carte_graphique" type="text" placeholder="Ex. Intel Iris Xe" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="ecran">Écran</label>
+                <input id="ecran" name="ecran" type="text" placeholder="Ex. 15.6 pouces" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label for="etat">État</label>
+                <select id="etat" name="etat" required>
+                  <option value="Neuf">Neuf</option>
+                  <option value="Comme Neuf">Comme Neuf</option>
+                  <option value="Occasion">Occasion</option>
+                  <option value="Non Précisé" selected>Non Précisé</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="form-error" class="error-message" role="alert" hidden></div>
+            <div class="form-actions">
+              <p class="form-hint">Les champs marqués sont transmis au modèle pour calculer l'estimation.</p>
+              <button id="submit-button" class="submit-button" type="submit">
+                <span class="button-label">Estimer le prix</span>
+                <!-- <span class="button-arrow" aria-hidden="true">→</span> -->
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="result-panel" aria-labelledby="result-title">
+          <div class="result-topline">
+            <p class="section-index">02 <span>/</span> PRÉDICTION</p>
+            <span class="result-mark" aria-hidden="true">↗</span>
+          </div>
+          <h2 id="result-title">Résultat de l'estimation</h2>
+          <div id="result-content" class="result-content" aria-live="polite" aria-atomic="true">
+            <p id="result-status" class="result-status">En attente des caractéristiques</p>
+            <div class="price-line">
+              <output id="price-value" class="price-value" for="marque titre processeur generation ram_go stockage_ssd stockage_hdd carte_graphique ecran etat">—</output>
+              <span id="price-currency" class="price-currency">FCFA</span>
+            </div>
+            <p class="result-caption">Prix estimé</p>
+          </div>
+          <div class="result-divider"></div>
+          <div class="result-note">
+            <span class="note-icon" aria-hidden="true">i</span>
+            <p>Estimation indicative basée sur les caractéristiques renseignées. Le prix réel peut varier.</p>
+          </div>
+          <div class="model-footnote">
+            <span class="model-footnote-line" aria-hidden="true"></span>
+            <span>Estimation basée sur un modèle de Machine Learning</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="page-footer"><span>ESTIMER LE PRIX D'UN PC</span><span>Estimation non guarantie</span></footer>
+  </div>
+</body>
+</html>

@@ -4,6 +4,8 @@ from typing import Any
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from normalization import (
@@ -18,13 +20,15 @@ from normalization import (
 )
 
 
+MODEL_PATH = Path(__file__).parent / "modele.joblib"
+INTERFACE_PATH = Path(__file__).parent / "interface"
+
 app = FastAPI(
     title="Estimation du prix d'un PC",
     description="API pour estimer le prix d'un ordinateur portable",
     version="1.0.0",
 )
-
-MODEL_PATH = Path(__file__).parent / "modele.joblib"
+app.mount("/static", StaticFiles(directory=INTERFACE_PATH), name="static")
 
 try:
     model = joblib.load(MODEL_PATH)
@@ -96,8 +100,8 @@ class PCFeatures(BaseModel):
 
 
 @app.get("/")
-def home() -> dict[str, str]:
-    return {"message": "API d'estimation du prix du PC opérationnelle"}
+def home() -> FileResponse:
+    return FileResponse(INTERFACE_PATH / "index.html")
 
 
 @app.get("/health")
