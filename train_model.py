@@ -45,11 +45,6 @@ data["carte_graphique"] = data["carte_graphique"].map(normalize_gpu)
 data["ecran"] = data["ecran"].map(normalize_screen)
 data["etat"] = data["etat"].map(normalize_condition)
 
-price_iqr = data["prix_fcfa"].quantile(0.75) - data["prix_fcfa"].quantile(0.25)
-lower_bound = data["prix_fcfa"].quantile(0.25) - 1.5 * price_iqr
-upper_bound = data["prix_fcfa"].quantile(0.75) + 1.5 * price_iqr
-data = data[data["prix_fcfa"].between(lower_bound, upper_bound)]
-
 X = data[features]
 y = data["prix_fcfa"]
 
