@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY main.py normalization.py modele.joblib ./
+COPY main.py normalization.py modele.joblib pc_bj_v32.xlsx ./
 COPY interface ./interface
 
 EXPOSE 8000

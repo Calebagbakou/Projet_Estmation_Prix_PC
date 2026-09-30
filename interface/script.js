@@ -5,6 +5,8 @@ const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
 const priceValue = document.querySelector("#price-value");
 const priceCurrency = document.querySelector("#price-currency");
+const featureOptions = {};
+const numericFeatures = ["ram_go", "stockage_ssd", "stockage_hdd"];
 
 const priceFormatter = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
@@ -26,6 +28,28 @@ function setLoading(isLoading) {
   buttonLabel.textContent = isLoading ? "Estimation en cours…" : "Estimer le prix";
 }
 
+async function loadFeatureOptions() {
+  try {
+    const response = await fetch("/features");
+    if (!response.ok) throw new Error("Feature options unavailable");
+
+    Object.assign(featureOptions, await response.json());
+    for (const [feature, values] of Object.entries(featureOptions)) {
+      const datalist = document.querySelector(`#options-${feature}`);
+      if (!datalist) continue;
+      datalist.replaceChildren(...values.map((value) => {
+        const option = document.createElement("option");
+        option.value = value;
+        return option;
+      }));
+    }
+  } catch {
+    showError("Les suggestions sont indisponibles. Vous pouvez toujours saisir vos valeurs.");
+  }
+}
+
+loadFeatureOptions();
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearError();
@@ -35,14 +59,26 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  const numericValues = Object.fromEntries(numericFeatures.map((feature) => {
+    const rawValue = form.elements[feature].value.trim().replace(",", ".");
+    return [feature, Number(rawValue)];
+  }));
+  if (
+    Object.values(numericValues).some((value) => !Number.isFinite(value))
+    || numericValues.ram_go <= 0
+    || numericValues.stockage_ssd < 0
+    || numericValues.stockage_hdd < 0
+  ) {
+    showError("RAM, SSD et HDD doivent contenir des nombres valides; la RAM doit être positive et les stockages ne peuvent pas être négatifs.");
+    return;
+  }
+
   const data = {
     marque: form.elements.marque.value.trim(),
     titre: form.elements.titre.value.trim(),
     processeur: form.elements.processeur.value.trim(),
     generation: form.elements.generation.value.trim(),
-    ram_go: form.elements.ram_go.valueAsNumber,
-    stockage_ssd: form.elements.stockage_ssd.valueAsNumber,
-    stockage_hdd: form.elements.stockage_hdd.valueAsNumber,
+    ...numericValues,
     carte_graphique: form.elements.carte_graphique.value.trim(),
     ecran: form.elements.ecran.value.trim(),
     etat: form.elements.etat.value,

@@ -21,7 +21,20 @@ from normalization import (
 
 
 MODEL_PATH = Path(__file__).parent / "modele.joblib"
+DATASET_PATH = Path(__file__).parent / "pc_bj_v32.xlsx"
 INTERFACE_PATH = Path(__file__).parent / "interface"
+FEATURE_COLUMNS = (
+    "marque",
+    "titre",
+    "processeur",
+    "generation",
+    "ram_go",
+    "stockage_ssd",
+    "stockage_hdd",
+    "carte_graphique",
+    "ecran",
+    "etat",
+)
 
 app = FastAPI(
     title="Estimation du prix d'un PC",
@@ -34,6 +47,21 @@ try:
     model = joblib.load(MODEL_PATH)
 except Exception as error:
     raise RuntimeError(f"Impossible de charger le modèle : {error}")
+
+try:
+    source_features = pd.read_excel(DATASET_PATH, usecols=FEATURE_COLUMNS)
+    feature_options: dict[str, list[str | float]] = {}
+    for feature in FEATURE_COLUMNS:
+        values = source_features[feature].dropna()
+        if feature in ("ram_go", "stockage_ssd", "stockage_hdd"):
+            feature_options[feature] = sorted(float(value) for value in values.unique())
+        else:
+            feature_options[feature] = sorted(
+                (str(value) for value in values.unique()),
+                key=str.casefold,
+            )
+except Exception as error:
+    raise RuntimeError(f"Impossible de charger les valeurs des features : {error}")
 
 
 class PCFeatures(BaseModel):
@@ -108,6 +136,11 @@ def home() -> FileResponse:
 def health() -> dict[str, str]:
     status = "ok" if hasattr(model, "named_steps") else "model_incompatible"
     return {"status": status}
+
+
+@app.get("/features")
+def get_feature_options() -> dict[str, list[str | float]]:
+    return feature_options
 
 
 @app.post("/predict")

@@ -43,48 +43,53 @@
             <div class="field-grid">
               <div class="field">
                 <label for="marque">Marque</label>
-                <input id="marque" name="marque" type="text" placeholder="Ex. Dell" autocomplete="off" required>
+                <input id="marque" name="marque" type="text" list="options-marque" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-marque"></datalist>
               </div>
               <div class="field">
                 <label for="titre">Titre du PC</label>
-                <input id="titre" name="titre" type="text" placeholder="Ex. Dell Latitude 5520" autocomplete="off" required>
+                <input id="titre" name="titre" type="text" list="options-titre" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-titre"></datalist>
               </div>
               <div class="field">
                 <label for="processeur">Processeur</label>
-                <input id="processeur" name="processeur" type="text" placeholder="Ex. Intel Core i5-1135G7" autocomplete="off" required>
+                <input id="processeur" name="processeur" type="text" list="options-processeur" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-processeur"></datalist>
               </div>
               <div class="field">
                 <label for="generation">Génération</label>
-                <input id="generation" name="generation" type="text" placeholder="Ex. 11eme" autocomplete="off" required>
+                <input id="generation" name="generation" type="text" list="options-generation" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-generation"></datalist>
               </div>
               <div class="field">
                 <label for="ram_go">RAM <span class="label-unit">Go</span></label>
-                <input id="ram_go" name="ram_go" type="number" min="1" step="any" inputmode="decimal" placeholder="Ex. 16" required>
+                <input id="ram_go" name="ram_go" type="text" list="options-ram_go" inputmode="decimal" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-ram_go"></datalist>
               </div>
               <div class="field">
                 <label for="stockage_ssd">Stockage SSD <span class="label-unit">Go</span></label>
-                <input id="stockage_ssd" name="stockage_ssd" type="number" min="0" step="any" inputmode="decimal" placeholder="Ex. 512" required>
+                <input id="stockage_ssd" name="stockage_ssd" type="text" list="options-stockage_ssd" inputmode="decimal" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-stockage_ssd"></datalist>
               </div>
               <div class="field">
                 <label for="stockage_hdd">Stockage HDD <span class="label-unit">Go</span></label>
-                <input id="stockage_hdd" name="stockage_hdd" type="number" min="0" step="any" inputmode="decimal" placeholder="Ex. 0" required>
+                <input id="stockage_hdd" name="stockage_hdd" type="text" list="options-stockage_hdd" inputmode="decimal" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-stockage_hdd"></datalist>
               </div>
               <div class="field">
                 <label for="carte_graphique">Carte graphique</label>
-                <input id="carte_graphique" name="carte_graphique" type="text" placeholder="Ex. Intel Iris Xe" autocomplete="off" required>
+                <input id="carte_graphique" name="carte_graphique" type="text" list="options-carte_graphique" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-carte_graphique"></datalist>
               </div>
               <div class="field">
                 <label for="ecran">Écran</label>
-                <input id="ecran" name="ecran" type="text" placeholder="Ex. 15.6 pouces" autocomplete="off" required>
+                <input id="ecran" name="ecran" type="text" list="options-ecran" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-ecran"></datalist>
               </div>
               <div class="field">
                 <label for="etat">État</label>
-                <select id="etat" name="etat" required>
-                  <option value="Neuf">Neuf</option>
-                  <option value="Comme Neuf">Comme Neuf</option>
-                  <option value="Occasion">Occasion</option>
-                  <option value="Non Précisé" selected>Non Précisé</option>
-                </select>
+                <input id="etat" name="etat" type="text" list="options-etat" placeholder="Choisir ou taper une valeur" autocomplete="off" required>
+                <datalist id="options-etat"></datalist>
               </div>
             </div>
 
